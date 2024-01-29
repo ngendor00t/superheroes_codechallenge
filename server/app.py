@@ -88,29 +88,31 @@ def power_by_id(id):
     response.headers["Content-Type"] = "application/json"
 
     return response
-
-
-
-@app.route('/power/int:id>' , methods=['GET', 'PATCH', 'DELETE'])
+@app.route('/power/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
 def power_by_id(id):
-   if request.method =='GET':
-       
-       
-    #    elif.request.method=='PATCH':
-    #         power=Power.query.filter_by(id=id).first()
-    #       for attr in request.form:
-    #        setattr(power,attr,request.form.get(attr))
+    if request.method == 'GET':
+        # 
+        pass
 
-    #       db.session.add(power)
-    #       db.session.commit()
+    elif request.method == 'PATCH':
+        power = Power.query.filter_by(id=id).first()
 
-    #     power-dict=power.to_dict()
-    #     response = make_response(
-    #             jsonify(review_dict),
-    #             200
-    #         )
+        if not power:
+            return make_response(jsonify({"error": "Power not found"}), 404)
 
-    #         return response
+        for attr in request.form:
+            setattr(power, attr, request.form.get(attr))
+
+        db.session.add(power)
+        db.session.commit()
+
+        power_dict = power.to_dict()
+        response = make_response(jsonify(power_dict), 200)
+        return response
+
+    elif request.method == 'DELETE':
+        # 
+        pass
 
 @app.route('/heropowers', methods=['GET', 'POST'])
 def reviews():

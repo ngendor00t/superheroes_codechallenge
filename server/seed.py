@@ -5,7 +5,7 @@ from faker import Faker
 from app import app
 from models import db, Hero, Power,HeroPower
 
-db.init_app(app)
+# db.init_app(app)
 
 fake = Faker()
 
