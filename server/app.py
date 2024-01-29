@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, request , make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -72,3 +72,49 @@ def power():
     response.headers["Content-Type"] = "application/json"
 
     return response
+
+@app.route('/power/<int:id>')
+def power_by_id(id):
+    power = Power.query.filter_by(id=id).first()
+
+    power_dict={
+       "number_of_power":power.number_of_power,
+       "description":power.description,
+    }
+    response = make_response(
+        jsonify(game_dict),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+
+    return response
+
+
+
+@app.route('/power/int:id>' , methods=['GET', 'PATCH', 'DELETE'])
+def power_by_id(id):
+   if request.method =='GET':
+       
+       
+     elif.request.method=='PATCH':
+          power=Power.query.filter_by(id=id).first()
+          for attr in request.form:
+           setattr(power,attr,request.form.get(attr))
+
+          db.session.add(power)
+          db.session.commit()
+
+        power-dict=power.to_dict()
+        response = make_response(
+                jsonify(review_dict),
+                200
+            )
+
+            return response
+
+
+
+       
+
+    
+
