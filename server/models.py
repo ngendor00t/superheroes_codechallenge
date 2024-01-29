@@ -11,7 +11,10 @@ class Hero(db.Model):
 
 
 
-    Power_id = db.Column(db.Integer(), db.ForeignKey('powers.id')) 
+    Power_id = db.Column(db.Integer(), db.ForeignKey('powers.id'))
+                         
+    def __repr__(self): 
+        return f'<hero {self.name} , {self.age}>'                  
 
 
 class Power(db.Model):
@@ -19,7 +22,9 @@ class Power(db.Model):
 
 
     id = db.Column(db.Integer,primary_key = True)
-    number_of_powers = db.column(db.String)
+    number_of_powers = db.column(db.Integer)
+
+    HeroPowers = db.relationship('heropowers', backref ='Power')
 
     @validates("description")
     def validate_description(self,key,description):
@@ -32,6 +37,7 @@ class HeroPower(db.Model):
     
 
     id = db.Column(db.Integer, primary_key=True)
+
     
     @validates('strength')
     def validate_strength(self,key,strength):
