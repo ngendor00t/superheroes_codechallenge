@@ -96,25 +96,54 @@ def power_by_id(id):
    if request.method =='GET':
        
        
-     elif.request.method=='PATCH':
-          power=Power.query.filter_by(id=id).first()
-          for attr in request.form:
-           setattr(power,attr,request.form.get(attr))
+    #    elif.request.method=='PATCH':
+    #         power=Power.query.filter_by(id=id).first()
+    #       for attr in request.form:
+    #        setattr(power,attr,request.form.get(attr))
 
-          db.session.add(power)
-          db.session.commit()
+    #       db.session.add(power)
+    #       db.session.commit()
 
-        power-dict=power.to_dict()
+    #     power-dict=power.to_dict()
+    #     response = make_response(
+    #             jsonify(review_dict),
+    #             200
+    #         )
+
+    #         return response
+
+@app.route('/heropowers', methods=['GET', 'POST'])
+def reviews():
+
+    if request.method == 'GET':
+        heropowers = []
+        for heropower in HeroPower.query.all():
+            heropower_dict = heropower.to_dict()
+            heropowers.append(heropower_dict)
+
+        heropower = make_response(
+            jsonify(heropowers),
+            200
+        )
+
+        return response
+
+    elif request.method == 'POST':
+        new_review = HeroPower(
+            strength=request.form.get("strength"),
+        )
+
+        db.session.add(new_heropower)
+        db.session.commit()
+
+        heropower_dict = new_heropower.to_dict()
+
         response = make_response(
-                jsonify(review_dict),
-                200
-            )
+            jsonify(heropower_dict),
+            201
+        )
 
-            return response
-
-
-
-       
+        return response
 
     
 
