@@ -48,19 +48,21 @@ def heroes():
    
 @app.route('/heroes/<int:id>')
 def hero_by_id(id):
-    hero = Hero.query.filter_by(id=id).first()
+    hero = Hero.query.filter(Hero.id == id).first()
 
     hero_dict = {
         "name": hero.name,
         "super_name": hero.super_name,
+        "powers": [
+                {'id':hp.power.id, 'name': hp.power.name, 'description': hp.power.description, 'strength': hp.strength} for hp in hero.hero_powers] 
+                }  
        
-    }
+    
 
     response = make_response(
         jsonify(hero_dict),
         200
     )
-    response.headers["Content-Type"] = "application/json"
 
     return response
 
