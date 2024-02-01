@@ -2,9 +2,9 @@ import { Switch, Route } from "react-router-dom";
 import Header from "./Header";
 import Hero from "./Hero";
 import Home from "./Home";
-import HeroPowerForm from "./HeroPowerForm";
+import HeroPowerForm from "./HeroPower";
 import Power from "./Power";
-import PowerEditForm from "./PowerEditForm";
+import PowerEditForm from "./Power";
 
 function App() {
   return (

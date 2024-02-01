@@ -20,9 +20,11 @@ def heroes():
     for hero in Hero.query.all():
         hero_dict ={
             "name" : hero.name,
-            "age"  : hero.age
+            "super_name"  : hero.super_name,
+            "powers" : [
+                {'id':hp.power.id, 'name': hp.power.name, 'description': hp.power.description, 'strength': hp.strength} for hp in hero.hero_powers] 
+                }  
         
-        }
         heroes.append(hero_dict)
 
         response = make_response(
@@ -31,121 +33,121 @@ def heroes():
         )
         return response  
 
-    if __name__ == '__main__':
-        app.run(port=5555)
-                          
-@app.route('/heroes/<int:id>')
-def hero_by_id(id):
-    hero = Hero.query.filter_by(id=id).first()
+   
+# @app.route('/heroes/<int:id>')
+# def hero_by_id(id):
+#     hero = Hero.query.filter_by(id=id).first()
 
-    hero_dict = {
-        "name": hero.name,
-        "age": hero.age,
+#     hero_dict = {
+#         "name": hero.name,
+#         "age": hero.age,
        
-    }
+#     }
 
-    response = make_response(
-        jsonify(hero_dict),
-        200
-    )
-    response.headers["Content-Type"] = "application/json"
+#     response = make_response(
+#         jsonify(hero_dict),
+#         200
+#     )
+#     response.headers["Content-Type"] = "application/json"
 
-    return response
+#     return response
 
-@app.route('/power')
-def power():
+# @app.route('/power')
+# def power():
     
-    powers =[]
-    for power in Power.query.all():
-        power_dict={
+#     powers =[]
+#     for power in Power.query.all():
+#         power_dict={
 
-            "number_of_power":power.number_of_power,
-            "description":power.description,
+#             "number_of_power":power.number_of_power,
+#             "description":power.description,
             
-        }
+#         }
 
-        power.append(power_dict)
-        response = make_response(
-        jsonify(powers),
-        200
-    )
-    response.headers["Content-Type"] = "application/json"
+#         power.append(power_dict)
+#         response = make_response(
+#         jsonify(powers),
+#         200
+#     )
+#     response.headers["Content-Type"] = "application/json"
 
-    return response
+#     return response
 
-@app.route('/power/<int:id>')
-def power_by_id(id):
-    power = Power.query.filter_by(id=id).first()
+# @app.route('/power/<int:id>')
+# def power_by_id(id):
+#     power = Power.query.filter_by(id=id).first()
 
-    power_dict={
-       "number_of_power":power.number_of_power,
-       "description":power.description,
-    }
-    response = make_response(
-        jsonify(game_dict),
-        200
-    )
-    response.headers["Content-Type"] = "application/json"
+#     power_dict={
+#        "number_of_power":power.number_of_power,
+#        "description":power.description,
+#     }
+#     response = make_response(
+#         jsonify(game_dict),
+#         200
+#     )
+#     response.headers["Content-Type"] = "application/json"
 
-    return response
-@app.route('/power/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
-def power_by_id(id):
-    if request.method == 'GET':
-        # 
-        pass
+#     return response
+# @app.route('/power/<int:id>', methods=['GET', 'PATCH'])
+# def power_by_id(id):
+#     if request.method == 'GET':
+#         # 
+#         pass
 
-    elif request.method == 'PATCH':
-        power = Power.query.filter_by(id=id).first()
+#     elif request.method == 'PATCH':
+#         power = Power.query.filter_by(id=id).first()
 
-        if not power:
-            return make_response(jsonify({"error": "Power not found"}), 404)
+#         if not power:
+#             return make_response(jsonify({"error": "Power not found"}), 404)
 
-        for attr in request.form:
-            setattr(power, attr, request.form.get(attr))
+#         for attr in request.form:
+#             setattr(power, attr, request.form.get(attr))
 
-        db.session.add(power)
-        db.session.commit()
+#         db.session.add(power)
+#         db.session.commit()
 
-        power_dict = power.to_dict()
-        response = make_response(jsonify(power_dict), 200)
-        return response
+#         power_dict = power.to_dict()
+#         response = make_response(jsonify(power_dict), 200)
+#         return response
 
-    elif request.method == 'DELETE':
-        # 
-        pass
+#     elif request.method == 'DELETE':
+#         # 
+#         pass
 
-@app.route('/heropowers', methods=['GET', 'POST'])
-def reviews():
+# @app.route('/heropowers', methods=['GET', 'POST'])
+# def reviews():
 
-    if request.method == 'GET':
-        heropowers = []
-        for heropower in HeroPower.query.all():
-            heropower_dict = heropower.to_dict()
-            heropowers.append(heropower_dict)
+#     if request.method == 'GET':
+#         heropowers = []
+#         for heropower in HeroPower.query.all():
+#             heropower_dict = heropower.to_dict()
+#             heropowers.append(heropower_dict)
 
-        heropower = make_response(
-            jsonify(heropowers),
-            200
-        )
+#         heropower = make_response(
+#             jsonify(heropowers),
+#             200
+#         )
 
-        return response
+#         return response
 
-    elif request.method == 'POST':
-        new_review = HeroPower(
-            strength=request.form.get("strength"),
-        )
+#     elif request.method == 'POST':
+#         new_review = HeroPower(
+#             strength=request.form.get("strength"),
+#         )
 
-        db.session.add(new_heropower)
-        db.session.commit()
+#         db.session.add(new_heropower)
+#         db.session.commit()
 
-        heropower_dict = new_heropower.to_dict()
+#         heropower_dict = new_heropower.to_dict()
 
-        response = make_response(
-            jsonify(heropower_dict),
-            201
-        )
+#         response = make_response(
+#             jsonify(heropower_dict),
+#             201
+#         )
 
-        return response
-
+#         return response
+    
+if __name__=='__main__':
+    app.run(port=5555 ,debug=True)
     
 

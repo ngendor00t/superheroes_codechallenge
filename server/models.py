@@ -7,11 +7,15 @@ class Hero(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    age = db.Column(db.Integer)
+    super_name = db.Column(db.Integer)
+    created_at =db.Column(db.DateTime,server_default=db.func.now())
+    updated_at =db.Column(db.DateTime,onupdate=db.func.now())
 
+    
 
-    Power_id = db.Column(db.Integer(), db.ForeignKey('powers.id'))
-                         
+    hero_powers = db.relationship('HeroPower', backref ='hero')
+
+    
     def __repr__(self): 
         return f'<hero {self.name} , {self.age}>'                  
 
@@ -21,16 +25,19 @@ class Power(db.Model):
 
 
     id = db.Column(db.Integer,primary_key = True)
-    number_of_powers = db.Column(db.Integer)
+    name = db.Column(db.Integer)
     description =db.Column(db.String)
+    created_at =db.Column(db.DateTime,server_default=db.func.now())
+    updated_at =db.Column(db.DateTime,onupdate=db.func.now())
 
-
-    Hero= db.relationship('hero', backref ='Power')
+    hero_powers =db.relationship('HeroPower', backref ='power')
+                                            
 
     @validates("description")
-    def validate_description(self,key,description):
-        if "length" not in description :
+    def validate_description(self,key,value):
+        if not value or len (value) < 7:
             raise ValueError("failed power validation")
+        return value 
         
     def __repr__(self) :
         return f' <Power {self.number_of_powers},{self.description}>'
@@ -42,18 +49,19 @@ class HeroPower(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     strength = db.Column(db.String)
+    created_at =db.Column(db.DateTime,server_default=db.func.now())
+    updated_at =db.Column(db.DateTime,onupdate=db.func.now())
 
-    # hero_id = db.Column (db.Integer ,db.Foreignkey('heroes.id'))
-    # power_id =db.Column (db.Integer, db.Foreignkey('powers.id'))
+    hero_id = db.Column(db.Integer ,db.ForeignKey('heroes.id'))
+    power_id =db.Column(db.Integer, db.ForeignKey('powers.id'))
 
-    hero = db.relationship('Hero', backref ='heropower')
-    power =db.relationship('Power', backref ='heropower')
-                                               
+                                       
     
     @validates('strength')
-    def validate_strength(self,key,strength):
-        if "presence" not in strength:
+    def validate_strength(self,key,value):
+        if not value or len(value)< 4:
             raise ValueError("failed heropower validation")
+        return value 
     
 
     def __repr__(self):
